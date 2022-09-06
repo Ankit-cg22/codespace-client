@@ -52,7 +52,7 @@ a {
     width: 100%;
     min-height: 100%;
     height: fit-content;
-
+    border:1px solid blue
   }
   .main-sub-container{
     width:100% ;

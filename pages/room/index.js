@@ -95,14 +95,14 @@ export default function Home() {
 
 
   return (
-    <div className='h-[100vh] w-[100%] mark'>
+    <div className='h-[100vh] w-[100vw]'>
         <Navbar/>
         <div className = 'main-container'>
           <div className='main-sub-container'>
               <div className='compiler-container '>
                 {/* compiler */}
                 <div className='compiler-options-bar relative flex justify-between items-center'>
-                    <div className='flex justify-around items-center w-[50%] absolute right-0 '>
+                    <div className='flex justify-around items-center w-[100%] md:w-[50%] absolute right-0 '>
                         <Dropdown
                             data = {themes}
                             val = {theme}

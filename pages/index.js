@@ -16,7 +16,7 @@ export default function Home() {
   //   setInputVal(inputVal)
   // })
   return (
-    <div className='h-[100vh] w-[100%] mark'>
+    <div className='h-[100vh] w-[100vw] mark'>
         <Navbar/>
         <div className = "cursor-pointer" onClick={()=>router.push('/room')}> Go to room</div>
         {/* <input value={inputVal} onChange = {(e) => handleInputChange(e.target.value)}/> */}
