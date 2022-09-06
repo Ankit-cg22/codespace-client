@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
 
-export default function Dropdown({data , val ,setVal}) {
+export default function Dropdown({data , val ,setVal , handleLanguageChange}) {
 
     const [openDropdown , setOpenDropdown] = useState(false)
 
     const handleOptionClick = (d) =>{ 
         setVal(d)
         setOpenDropdown(false)
+        if(handleLanguageChange) handleLanguageChange(d)
     }
 
   return (
