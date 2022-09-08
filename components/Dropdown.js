@@ -22,7 +22,7 @@ export default function Dropdown({data , val ,setVal , handleLanguageChange}) {
 
         </div>
         {openDropdown &&
-            <div className='bg-white mark h-[fit-content] max-h-[150px] overflow-auto w-[90px] rounded-[5px] absolute top-[32px] z-[10]'>
+            <div className='bg-white border-gray-700 border-[1px] h-[fit-content] max-h-[150px] overflow-auto w-[90px] rounded-[5px] absolute top-[32px] z-[10]'>
                 {data.map((d , idx) => {
                     return(
                         <div key={idx} className=' py-[6px] font-bold w-full cursor-pointer hover:bg-gray-200 text-center' onClick={() => handleOptionClick(d)}>

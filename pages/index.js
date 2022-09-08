@@ -57,7 +57,7 @@ export default function Home() {
   }
 
   return (
-    <div className='h-[100vh] w-[100vw] mark'>
+    <div className='h-[100vh] w-[100vw]  bg-gray-900'>
         <Navbar/>
         <div className='w-full h-[90%] flex justify-center items-center flex-col relative'>
 

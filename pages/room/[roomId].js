@@ -103,13 +103,13 @@ export default function Home() {
 
 
   return (
-    <div className='h-[100vh] w-[100vw]'>
+    <div className='h-[100vh] w-[100vw] '>
         <Navbar roomId={roomId}/>
-        <div className = 'main-container'>
+        <div className = 'main-container border-[2px] border-gray-700'>
           <div className='main-sub-container'>
               <div className='compiler-container '>
                 {/* compiler */}
-                <div className='compiler-options-bar relative flex justify-between items-center'>
+                <div className='compiler-options-bar relative flex justify-between items-center bg-white'>
                     <div className='flex justify-around items-center w-[100%] md:w-[50%] absolute right-0 '>
                         <Dropdown
                             data = {themes}
@@ -140,20 +140,20 @@ export default function Home() {
               </div>
           </div>
           <div className='main-sub-container'>
-            <div className='board-container'>
+            <div className='board-container bg-white border-[2px] border-l-gray-400 border-b-gray-400'>
               {/* board */}
               <DrawingBoard socket={socket} roomId={roomId}/>
             </div>
             <div className='io-container-main'>
               <div className='io-container-sub flex flex-col '>
                 {/* input */}
-                <div className='h-[15%] w-full max-h-[30px] font-bold flex items-center pl-[10px]'>Input</div>
+                <div className='h-[15%] w-full max-h-[30px] font-bold flex items-center pl-[10px] bg-white' >Input</div>
                 <div className='grow'>
                     <Editor theme = {theme.value} value={input} onChange = {val => handleInputChange(val)}/>
                 </div>
               </div>
               <div className='io-container-sub flex flex-col'>
-                <div className='h-[15%] w-full max-h-[30px] font-bold flex items-center pl-[10px]'>Output   </div>
+                <div className='h-[15%] w-full max-h-[30px] font-bold flex items-center pl-[10px] bg-white'>Output   </div>
                 <div className='grow'>
                     <Editor theme = {theme.value}  value={output} onChange={val => handleOutputChange(val)}/>
                 </div>

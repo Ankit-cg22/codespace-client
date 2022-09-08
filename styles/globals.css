@@ -38,11 +38,11 @@ a {
 }
 
 .main-container{
-  @apply h-[90%] max-h-[1000px] w-[100%] max-w-[1400px] mark mx-auto row-flex 
+  @apply h-[90%] max-h-[1000px] w-[100%] max-w-[1400px]  mx-auto row-flex 
 }
 
 .main-sub-container{
-  @apply w-[50%] h-full mark
+  @apply w-[50%] h-full 
 }
 
 @media(max-width:1000px){
@@ -63,18 +63,18 @@ a {
 }
 
 .board-container{
-  @apply w-full h-[65%] mark
+  @apply w-full h-[65%] 
 }
 
 .io-container-main{
-  @apply h-[35%] w-full mark row-flex
+  @apply h-[35%] w-full  row-flex
 }
 
 .io-container-sub{
-  @apply w-[50%] h-full mark 
+  @apply w-[50%] h-full  
 }
 .navbar-main{
-  @apply w-full h-[10%] max-h-[100px] mark flex justify-between items-center px-[1%]
+  @apply w-full h-[10%] max-h-[100px] flex justify-between items-center px-[1%]
 }
 
 .compiler-container{
@@ -82,15 +82,14 @@ a {
 }
 
 .compiler-options-bar{
-  @apply h-[10%] max-h-[60px] w-full mark 
+  @apply h-[10%] max-h-[60px] w-full  
 }
 
 .editor-container{
-  @apply mark grow w-full 
+  @apply  grow w-full 
 }
 
 .main-dropdown-container{
-  @apply mark
 }
 
 .loading-animation{
