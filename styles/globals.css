@@ -94,7 +94,7 @@ a {
 }
 
 .loading-animation{
-  border-top : 5px solid white;
+  border-top : 3px solid white;
   animation : loading 1s infinite linear ;
 }
 
@@ -106,4 +106,12 @@ a {
   100%{
     transform: rotate(360deg);
   }
+}
+
+.home-button{
+  @apply max-w-[300px] w-[80%] md:w-[80%] p-[10px] bg-cyan-200 rounded-[5px] font-bold
+}
+
+.home-form-container{
+  @apply max-h-[350px] max-w-[700px] h-[40%] w-[70%] md:w-[40%] flex flex-col justify-center items-center rounded-[5px] p-[20px] mb-[10px] bg-gray-700
 }

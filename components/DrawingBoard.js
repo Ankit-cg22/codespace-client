@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-export default function DrawingBoard({ socket }) {
+export default function DrawingBoard({ socket  , roomId}) {
 
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -29,7 +29,7 @@ export default function DrawingBoard({ socket }) {
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
     setIsDrawing(true);
-    socket.emit('mouse-move-emit', { offsetX, offsetY })
+    socket.emit('mouse-move-emit', { offsetX, offsetY  , roomId})
   }
 
   const finishDrawing = () => {
@@ -44,14 +44,13 @@ export default function DrawingBoard({ socket }) {
     const { offsetX, offsetY } = nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
-    socket.emit('draw-emit', { offsetX, offsetY })
+    socket.emit('draw-emit', { offsetX, offsetY  , roomId})
   }
 
   const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d")
-    context.fillStyle = "white"
-    context.fillRect(0, 0, canvas.width, canvas.height)
+    contextRef.current.fillStyle = "white"
+    contextRef.current.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+    socket.emit('clear-canvas-emit' , roomId);
   }
 
   socket.on('mouse-move-broadcast', value => {
@@ -59,11 +58,17 @@ export default function DrawingBoard({ socket }) {
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
   })
-  console.log(isDrawing)
+
   socket.on('draw-broadcast', value => {
     const { offsetX, offsetY } = value;
     contextRef.current?.lineTo(offsetX, offsetY);
     contextRef.current?.stroke();
+  })
+
+  socket.on('clear-canvas-broadcast' , ()=>{
+    if(!contextRef.current)return 
+    contextRef.current.fillStyle = "white"
+    contextRef.current.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height)
   })
 
   return (

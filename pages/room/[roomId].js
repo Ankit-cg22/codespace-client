@@ -7,33 +7,40 @@ import Dropdown from '../../components/Dropdown';
 import axios from 'axios';
 import CircularLoader from '../../components/CircularLoader';
 import DrawingBoard from '../../components/DrawingBoard';
-import { io } from 'socket.io-client';
+import { socket } from '../../utils/socket';
+import { useRouter } from 'next/router';
 
 const BACKEND_URL = 'http://localhost:8000'
 
-const socket = io(BACKEND_URL)
-
 export default function Home() {
+  const router = useRouter()
 
   const [code ,setCode] = useState("");
   const [input , setInput] = useState("");
   const [output , setOutput] = useState("");
   const [theme , setTheme] = useState({})
   const [language , setLanguage] = useState({})
-  const [running , setRunning] = useState(false)
+  const [loading , setLoading] = useState(false)
   const [editorValue , setEditorValue] = useState('');
+  const [roomId , setRoomId] = useState('')
 
   const API = axios.create( { baseURL : 'http://localhost:8000' } )
 
   useEffect(()=>{
+
+    if(!router.isReady) return 
+
     setTheme(themes[0])
     setLanguage(languages[0])
-  } ,[])
+    setRoomId(router.query.roomId)
+    socket.emit('join-room' , router.query.roomId)
+
+  } ,[router.isReady])
   
   const handleCompileClick =()=>{
     console.log(code)
     console.log(input)
-    setRunning(true)
+    setLoading(true)
     API.post('/compile' ,{
       code : code ,
       input :  input ,
@@ -43,36 +50,37 @@ export default function Home() {
       console.log("ok")
       console.log(res.data.data.output )
       setOutput(res.data.data.output)
-      socket.emit('output-value-emit' , res.data.data.output)
+      socket.emit('output-value-emit' , res.data.data.output , roomId)
 
-      setRunning(false)
+      setLoading(false)
       
     })
     .catch(function(error){
       console.log(error)
-      setRunning(false)
+      setLoading(false)
     })
     
   }
 
   const handleEditorValueChange =(value) => { 
     setCode(value)
-    socket.emit('editor-value-emit' , value);
+    setEditorValue(value)
+    socket.emit('editor-value-emit' , value , roomId);
   }
 
   const handleInputChange = (value)=>{
     setInput(value)
-    socket.emit('input-value-emit' , value)
+    socket.emit('input-value-emit' , value , roomId)
   }
 
   const handleOutputChange = (value)=>{
     setOutput(value)
-    socket.emit('output-value-emit' , value)
+    socket.emit('output-value-emit' , value , roomId)
   }
 
   const handleLanguageChange = (language) => {
     // console.log("change")
-    socket.emit('language-change-emit' , language)
+    socket.emit('language-change-emit' , language , roomId)
   }
 
   //======
@@ -96,7 +104,7 @@ export default function Home() {
 
   return (
     <div className='h-[100vh] w-[100vw]'>
-        <Navbar/>
+        <Navbar roomId={roomId}/>
         <div className = 'main-container'>
           <div className='main-sub-container'>
               <div className='compiler-container '>
@@ -116,7 +124,7 @@ export default function Home() {
                         />
 
                         <button className='w-[90px] h-[30px] text-center rounded-[5px] cursor-pointer border-[2px] border-gray-500 font-bold flex justify-center items-center' onClick={handleCompileClick}>
-                          {running ? <CircularLoader/> : 'Compile' } 
+                          {loading ? <CircularLoader/> : 'Compile' } 
                         </button>
                     </div>
                 </div>
@@ -124,7 +132,7 @@ export default function Home() {
                     <Editor
                         height="100%"
                         language = {language.value}
-                        value={editorValue ? editorValue : language.defaultValue}
+                        value={editorValue || language.defaultValue}
                         theme = {theme.value}
                         onChange={handleEditorValueChange}
                     />
@@ -134,7 +142,7 @@ export default function Home() {
           <div className='main-sub-container'>
             <div className='board-container'>
               {/* board */}
-              <DrawingBoard socket={socket}/>
+              <DrawingBoard socket={socket} roomId={roomId}/>
             </div>
             <div className='io-container-main'>
               <div className='io-container-sub flex flex-col '>
