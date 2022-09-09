@@ -11,7 +11,9 @@
   "dependencies": {
     "@monaco-editor/react": "^4.4.5",
     "axios": "^0.27.2",
+    "freeice": "^2.2.2",
     "next": "12.2.5",
+    "peerjs": "^1.4.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "socket.io-client": "^4.5.1"

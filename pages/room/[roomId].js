@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState , useRef} from 'react';
 import Navbar from '../../components/Navbar'
 import Editor  from "@monaco-editor/react";
 import { themes } from '../../utils/themes';
@@ -9,8 +9,9 @@ import CircularLoader from '../../components/CircularLoader';
 import DrawingBoard from '../../components/DrawingBoard';
 import { socket } from '../../utils/socket';
 import { useRouter } from 'next/router';
-
+import freeice from 'freeice'
 const BACKEND_URL = 'http://localhost:8000'
+import { ReactDOM } from 'react';
 
 export default function Home() {
   const router = useRouter()
@@ -23,9 +24,14 @@ export default function Home() {
   const [loading , setLoading] = useState(false)
   const [editorValue , setEditorValue] = useState('');
   const [roomId , setRoomId] = useState('')
-
-  const API = axios.create( { baseURL : 'http://localhost:8000' } )
-
+  const [audioStreams ,setAudioStreams] = useState([])
+  const audioRef = useRef()
+  const secondAudioRef = useRef()
+  const [paused , setPaused] = useState(false)
+  const [mutedIncoming , setMutedIncoming] = useState(false)
+  const peers=[]
+  const streamRef = useRef()
+  let myPeer ;
   useEffect(()=>{
 
     if(!router.isReady) return 
@@ -36,6 +42,24 @@ export default function Home() {
     socket.emit('join-room' , router.query.roomId)
 
   } ,[router.isReady])
+  useEffect(() => {
+    if(!router.isReady) return 
+      import('peerjs').then(({ default: Peer }) => {
+        myPeer = new Peer(undefined, {
+        host: '/',
+        port: '3001'
+      })
+
+      myPeer.on('open' , id=>{
+        socket.emit('join-room', router.query.roomId ,id)
+      })
+      
+    });
+    
+  }, [router.isReady])
+
+  const API = axios.create( { baseURL : 'http://localhost:8000' } )
+
   
   const handleCompileClick =()=>{
     console.log(code)
@@ -101,10 +125,71 @@ export default function Home() {
     setLanguage(language)
   })
 
+  socket.on('user-connected' , userId => {
+    console.log(userId)
+  })
+  
+  useEffect(()=>{
+    navigator.mediaDevices.getUserMedia({
+      audio:true,
+    }).then(stream => {
+      streamRef.current = stream
+      audioRef.current.srcObject = streamRef.current
+
+      myPeer.on('call' , call=>{
+        call.answer(stream)
+        call.on('stream' , userVideoStream=>{
+          secondAudioRef.current.srcObject = userVideoStream
+        })
+      })
+
+      socket.on('user-connected' , userId => {
+        console.log("oi")
+        connectToNewUser(userId , stream)
+      })
+
+    })
+  
+  }, [])
+
+  function connectToNewUser(userId , stream){
+    const call = myPeer.call(userId , stream)
+    call.on('stream' , userVideoStream => {
+      secondAudioRef.current.srcObject = userVideoStream
+    })
+    call.on('close', () => {
+      secondAudioRef.current.srcObject = null
+    })
+  
+    peers[userId] = call
+  }
+
+  socket.on('user-disconnected' , userId=>{
+    console.log(userId)
+    if(peers[userId]) peers[userId].close()
+  } )
+
+  const handlePauseClick = () => {
+    if(paused){
+      streamRef.current.getAudioTracks().forEach(function(track) {
+        track.enabled = true;
+    });
+    }
+    else {
+      streamRef.current.getAudioTracks().forEach(function(track) {
+        track.enabled = false;
+    });
+    }
+    setPaused(!paused)
+  }
 
   return (
     <div className='h-[100vh] w-[100vw] '>
-        <Navbar roomId={roomId}/>
+        <Navbar roomId={roomId} handlePauseClick={handlePauseClick} setMutedIncoming={setMutedIncoming} mutedIncoming={mutedIncoming} paused={paused}/>
+        <div  className='h-[0] mark'>
+            <audio muted  autoPlay ref={audioRef}></audio>
+            <audio muted={mutedIncoming} autoPlay ref={secondAudioRef}></audio>
+        </div>
         <div className = 'main-container border-[2px] border-gray-700'>
           <div className='main-sub-container'>
               <div className='compiler-container '>

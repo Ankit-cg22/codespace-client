@@ -11,6 +11,7 @@ class MyDocument extends Document {
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         </Head>
         <body>
+          <script defer src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
           <Main />
           <NextScript />
         </body>
