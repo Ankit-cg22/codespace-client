@@ -12,17 +12,24 @@ export default function Home() {
 
   const [enteredRoomId , setEnteredRoomId] = useState();
   const [errorMessage , setErrorMessage] = useState()
-  const [loading ,setLoading]= useState(false);
+  const [creatingRoom ,setCreatingRoom]= useState(false);
+  const [joiningRoom ,setJoiningRoom]= useState(false);
+
 
   const createRoom = () => {
+    setCreatingRoom(true)
     API.get('/createRoom')
     .then(function(res){
       const roomId = res.data.roomId
       socket.emit('join-room' , roomId)
       router.push(`/room/${roomId}`)
+      setCreatingRoom(false)
+
     })
     .catch(function(err){ 
       console.log(err.message)
+      setCreatingRoom(false)
+
     })
   }
   
@@ -39,18 +46,18 @@ export default function Home() {
       createErrorMessage("Please enter room id ")
       return ;
     }
-    setLoading(true)
+    setJoiningRoom(true)
     API.post('/join-room' , {roomId : enteredRoomId})
     .then(function(res){
       const roomId = res.data.roomId
       socket.emit('join-room' , roomId)
       router.push(`/room/${roomId}`)
-      setLoading(false)
+      setJoiningRoom(false)
     })
     .catch(function(err){
       const errorMessage = err.response.data.message
       createErrorMessage(errorMessage)
-      setLoading(false)
+      setJoiningRoom(false)
     })
   }
 
@@ -66,12 +73,12 @@ export default function Home() {
           }
 
           <div className='home-form-container'>
-            <button className='home-button' onClick={createRoom}>Create Room</button>
+            <button className='home-button' onClick={createRoom}>{creatingRoom ? <CircularLoader/> : "Create Room"}</button>
           </div>
           <div className='home-form-container'>
             <input placeholder='Enter the room id' className='max-w-[300px] w-[80%] md:w-[80%] mb-[20px] p-[10px] outline-none border-[2px] border-cyan-200 rounded-[5px]' onChange={(e)=>setEnteredRoomId(e.target.value)} />
             <button className='home-button' onClick={handleJoinRoomClick}>
-              {loading ? <CircularLoader/> : "Join Room"}
+              {joiningRoom ? <CircularLoader/> : "Join Room"}
             </button>
           </div>
         </div>
