@@ -4,13 +4,11 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import CircularLoader from '../components/CircularLoader';
 import { socket } from '../utils/socket';
-
-const BACKEND_URL = 'http://localhost:8000/' 
-
+import { BACKEND_URL } from '../utils/constants';
 
 export default function Home() {
   const router = useRouter();
-  const API = axios.create( { baseURL : 'http://localhost:8000' } )
+  const API = axios.create( { baseURL : BACKEND_URL } )
 
   const [enteredRoomId , setEnteredRoomId] = useState();
   const [errorMessage , setErrorMessage] = useState()

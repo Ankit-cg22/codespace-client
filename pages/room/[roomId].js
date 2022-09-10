@@ -10,7 +10,8 @@ import DrawingBoard from '../../components/DrawingBoard';
 import { socket } from '../../utils/socket';
 import { useRouter } from 'next/router';
 import freeice from 'freeice'
-const BACKEND_URL = 'http://localhost:8000'
+import { BACKEND_URL } from '../../utils/constants';
+
 import { ReactDOM } from 'react';
 
 export default function Home() {
@@ -31,6 +32,7 @@ export default function Home() {
   const [mutedIncoming , setMutedIncoming] = useState(false)
   const peers=[]
   const streamRef = useRef()
+  const editorRef = useRef(null)
   let myPeer ;
   useEffect(()=>{
 
@@ -45,10 +47,7 @@ export default function Home() {
   useEffect(() => {
     if(!router.isReady) return 
       import('peerjs').then(({ default: Peer }) => {
-        myPeer = new Peer(undefined, {
-        host: '/',
-        port: '3001'
-      })
+        myPeer = new Peer()
 
       myPeer.on('open' , id=>{
         socket.emit('join-room', router.query.roomId ,id)
@@ -58,7 +57,7 @@ export default function Home() {
     
   }, [router.isReady])
 
-  const API = axios.create( { baseURL : 'http://localhost:8000' } )
+  const API = axios.create( { baseURL : BACKEND_URL } )
 
   
   const handleCompileClick =()=>{
@@ -111,7 +110,9 @@ export default function Home() {
   socket.on('editor-value-broadcast', value => {
     setCode(value)
     setEditorValue(value)
+    
   })
+
 
   socket.on('input-value-broadcast' , value => {
     setInput(value)
@@ -180,6 +181,9 @@ export default function Home() {
         track.enabled = false;
     });
     }
+    streamRef.current.getAudioTracks().forEach(function(track){
+      console.log(track.enabled)
+    })
     setPaused(!paused)
   }
 
@@ -220,6 +224,7 @@ export default function Home() {
                         value={editorValue || language.defaultValue}
                         theme = {theme.value}
                         onChange={handleEditorValueChange}
+                        ref = {editorRef}
                     />
                 </div>
               </div>
