@@ -181,16 +181,16 @@ export default function Home() {
         track.enabled = false;
     });
     }
-    streamRef.current.getAudioTracks().forEach(function(track){
-      console.log(track.enabled)
-    })
+    // streamRef.current.getAudioTracks().forEach(function(track){
+    //   console.log(track.enabled)
+    // })
     setPaused(!paused)
   }
 
   return (
     <div className='h-[100vh] w-[100vw] '>
         <Navbar roomId={roomId} handlePauseClick={handlePauseClick} setMutedIncoming={setMutedIncoming} mutedIncoming={mutedIncoming} paused={paused}/>
-        <div  className='h-[0] mark'>
+        <div  className='h-[0] w-[0] '>
             <audio muted  autoPlay ref={audioRef}></audio>
             <audio muted={mutedIncoming} autoPlay ref={secondAudioRef}></audio>
         </div>
