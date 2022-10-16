@@ -111,6 +111,18 @@ a {
   @apply max-w-[300px] w-[80%] md:w-[80%] p-[10px] bg-cyan-200 rounded-[5px] font-bold
 }
 
+.login-button{
+  @apply p-[10px] bg-cyan-200 rounded-[5px] font-bold
+}
+
 .home-form-container{
   @apply max-h-[350px] max-w-[700px] h-[40%] w-[70%] md:w-[40%] flex flex-col justify-center items-center rounded-[5px] p-[20px] mb-[10px] bg-gray-700
+}
+
+.login-form-container{
+  @apply  max-w-[700px] w-[70%] md:w-[40%] flex flex-col justify-center items-center rounded-[5px] p-[20px] py-[30px] mb-[10px] bg-gray-700
+}
+
+.navbar-link{
+  @apply text-[1rem] text-gray-300 font-bold cursor-pointer underline
 }

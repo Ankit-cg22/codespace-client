@@ -14,7 +14,7 @@ export default function Home() {
   const [errorMessage , setErrorMessage] = useState()
   const [creatingRoom ,setCreatingRoom]= useState(false);
   const [joiningRoom ,setJoiningRoom]= useState(false);
-
+  
 
   const createRoom = () => {
     setCreatingRoom(true)
@@ -61,6 +61,8 @@ export default function Home() {
     })
   }
 
+
+
   return (
     <div className='h-[100vh] w-[100vw]  bg-gray-900'>
         <Navbar/>
@@ -72,7 +74,7 @@ export default function Home() {
             </div>
           }
 
-          <div className='home-form-container'>
+          <div className='home-form-container '>
             <button className='home-button' onClick={createRoom}>{creatingRoom ? <CircularLoader/> : "Create Room"}</button>
           </div>
           <div className='home-form-container'>

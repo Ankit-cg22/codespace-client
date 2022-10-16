@@ -1,9 +1,15 @@
-import React , {useState} from 'react'
+import React , {useState , useEffect} from 'react'
 import {useRouter} from 'next/router' 
+import { BACKEND_URL } from '../utils/constants'
+import axios from 'axios'
 
 export default function Navbar({roomId , handlePauseClick ,setMutedIncoming , mutedIncoming , paused }) {
   const router = useRouter()
   const [showCopied , setCopied] = useState(false)
+  const [loggedIn,setLoggedIn] = useState(false)
+  const [loggedInUser, setLoggedInUser] = useState();
+  const API = axios.create( { baseURL : BACKEND_URL } )
+
   const showCopy = () => {
     setCopied(true)
     setTimeout(()=>{
@@ -14,12 +20,46 @@ export default function Navbar({roomId , handlePauseClick ,setMutedIncoming , mu
     navigator.clipboard.writeText(roomId)
     showCopy()
   }
+
+  const handleLogOut = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setLoggedIn(false)
+    setLoggedInUser({})
+    router.push('/')
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if(token === null) return ;
+    API.get('/auth/isVerified' ,
+    {
+      headers:{
+        token : token
+      }
+    }
+    ).then(function(response){
+      console.log(response.data.isVerified)
+      console.log(response.data.user)
+      if(response.data.isVerified === false)return; 
+      localStorage.setItem('user' , JSON.stringify(response.data.user))
+      setLoggedIn(true)
+      setLoggedInUser(response.data.user)
+    })
+    .catch(function(error){
+      console.log(error.message)
+    })
+
+  }, [])
+  
+
+
   return (
     <div className='navbar-main flex justify-center items-center bg-gray-700 text-gray-300'>
         <div className='text-[2rem] font-bold cursor-pointer ' onClick={()=> router.push('/')} >
             CodeSpace
         </div>
-        {roomId && 
+        {roomId ? 
           <div className='flex justify-between items-center font-bold relative'>
             {showCopied && <div className='bg-cyan-200 p-[5px] rounded-[5px] text-black absolute right-[10%] bottom-[-120%] z-10'>Copied</div>}
             <button className='bg-cyan-200 p-[5px] rounded-[5px] mx-[10px] text-black' onClick={handlePauseClick}>
@@ -40,6 +80,19 @@ export default function Navbar({roomId , handlePauseClick ,setMutedIncoming , mu
             
             <button className='bg-cyan-200 p-[5px] rounded-[5px] mx-[10px] text-black' onClick={handleCopyClick}>Copy Room ID</button>
           </div>
+        :
+        <>
+          {loggedIn ?
+            <div className='w-[33%] md:w-[13%] flex justify-between'>
+              <div className='navbar-link' onClick={()=>router.push('/profilePage')}>Profile</div>
+              <div className='navbar-link' onClick={handleLogOut}>Log Out</div>
+            </div>
+          :
+            <div className='navbar-link min-w-[10%] flex justify-center ' onClick={()=>router.push('/login')}>
+              Login
+            </div>
+          }
+        </>
         }
     </div>
   )

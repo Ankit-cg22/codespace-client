@@ -11,12 +11,13 @@ import { socket } from '../../utils/socket';
 import { useRouter } from 'next/router';
 import freeice from 'freeice'
 import { BACKEND_URL } from '../../utils/constants';
-
+import SaveSnippetModal from '../../components/SaveSnippetModal';
 import { ReactDOM } from 'react';
 
 export default function Home() {
   const router = useRouter()
 
+  const [userLoggedIn , setUserLoggedIn] = useState(false)
   const [code ,setCode] = useState("");
   const [input , setInput] = useState("");
   const [output , setOutput] = useState("");
@@ -33,6 +34,16 @@ export default function Home() {
   const peers=[]
   const streamRef = useRef()
   const editorRef = useRef(null)
+  const [openModal , setOpenModal] = useState(false);
+  const [notification , setNotification] = useState('')
+
+  function createNotification(msg){
+    setNotification(msg)
+    setTimeout(()=>{
+      setNotification("");
+    },3000)
+  } 
+
   let myPeer ;
   useEffect(()=>{
 
@@ -187,6 +198,29 @@ export default function Home() {
     setPaused(!paused)
   }
 
+  useEffect(() => {
+    
+    const token = localStorage.getItem('token')
+    if(token === null) return ;
+    API.get('/auth/isVerified' ,
+    {
+      headers:{
+        token : token
+      }
+    }
+    ).then(function(response){
+      if(response.data.isVerified === false)return; 
+      setUserLoggedIn(true)
+      localStorage.setItem('user' , JSON.stringify(response.data.user))
+    })  
+    .catch(function(error){
+      localStorage.removeItem('user')
+      console.log(error.message)
+    })
+
+
+  }, [])
+
   return (
     <div className='h-[100vh] w-[100vw] '>
         <Navbar roomId={roomId} handlePauseClick={handlePauseClick} setMutedIncoming={setMutedIncoming} mutedIncoming={mutedIncoming} paused={paused}/>
@@ -199,7 +233,14 @@ export default function Home() {
               <div className='compiler-container '>
                 {/* compiler */}
                 <div className='compiler-options-bar relative flex justify-between items-center bg-white'>
-                    <div className='flex justify-around items-center w-[100%] md:w-[50%] absolute right-0 '>
+                    {userLoggedIn && 
+                      <div>
+                        <div className=' bg-cyan-200 p-[5px] rounded-[5px] mx-[10px] text-black font-bold cursor-pointer' onClick={() => setOpenModal(true)}>
+                          <svg height={20} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 20V8.414a1 1 0 0 0-.293-.707l-4.414-4.414A1 1 0 0 0 15.586 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1zM9 8h4a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2zm7 11H8v-4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/></svg>
+                        </div>
+                      </div>
+                    }
+                    <div className='flex justify-around items-center w-[80%] md:w-[50%] absolute right-0 '>
                         <Dropdown
                             data = {themes}
                             val = {theme}
@@ -252,6 +293,21 @@ export default function Home() {
           </div>
           
         </div>
+
+        <SaveSnippetModal
+          open = {openModal}
+          code = {code}
+          setOpen = {setOpenModal}
+          language = {language.value}
+          createNotification={createNotification}
+        />
+
+            {notification && 
+                <div className='w-[300px] p-[20px] bg-green-200 font-bold flex justify-center items-center rounded-[10px] absolute bottom-[5%] right-[1%] '>
+                  {notification} 
+                </div>
+            }
+
     </div>
   )
 }
