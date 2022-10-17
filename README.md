@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1> Codespace : Collaborative coding platform </h1>
+<h3> Platform that faciliates collaborative coding with realtime code editor ,code compilation support ,  collaborative drawing board and realtime voice chat . </h3>
 
-## Getting Started
+<h3> Server code : https://github.com/Ankit-cg22/codespace-server  </h3> 
 
-First, run the development server:
+<h2>Features</h2>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Create and join rooms 
+- Real time code editor
+- Collaborative real time drawing board 
+- Code compilation support for c , c++ , java and python 
+- User authentication and authorization using jwt tokens
+- Feature to save code snippets . During meetings if one wants to save a code snippets he/she can do it with one click 
+- Edit and delete saved snippets . One can edit the saved snippets eg to add some notes to them 
+- Simple toast notification system , implemented without using any external library 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<h2>Tech/Frameworks/Packages used</h2>
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+<h3> Frontend </h3>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- NextJS : for building the UI
+- Tailwind CSS : styling 
+- Socket.io : for handling web socket requests on frontend
+- axios : for making http requests 
+- peerjs : for establishing peer to peer webrtc connection 
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+<h3> Backend </h3>
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Node JS and Express JS : for handling backend requests
+- PostgreSQL : as database 
+- pg : npm package for interacting with PostgreSQL database
+- socket.io : for handling the websockets requests on server
+- jsonwebtokens : for signing and validating jwts
+- bcrypt : for hashing password
