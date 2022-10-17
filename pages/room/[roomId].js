@@ -75,7 +75,7 @@ export default function Home() {
     console.log(code)
     console.log(input)
     setLoading(true)
-    API.post('/compile' ,{
+    API.post('/userAction/compile' ,{
       code : code ,
       input :  input ,
       lang : language.value
@@ -220,6 +220,10 @@ export default function Home() {
 
 
   }, [])
+
+  useEffect(()=>{
+    setCode(language.defaultValue)
+  }, [language])
 
   return (
     <div className='h-[100vh] w-[100vw] '>

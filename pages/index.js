@@ -18,11 +18,16 @@ export default function Home() {
 
   const createRoom = () => {
     setCreatingRoom(true)
-    API.get('/createRoom')
+    API.get('/userAction/createRoom')
     .then(function(res){
       const roomId = res.data.roomId
-      socket.emit('join-room' , roomId)
-      router.push(`/room/${roomId}`)
+      if(roomId){
+        socket.emit('join-room' , roomId)
+        router.push(`/room/${roomId}`)
+      }
+      else{
+        createErrorMessage("Room could not be created !")
+      }
       setCreatingRoom(false)
 
     })
@@ -47,7 +52,7 @@ export default function Home() {
       return ;
     }
     setJoiningRoom(true)
-    API.post('/join-room' , {roomId : enteredRoomId})
+    API.post('/userAction/join-room' , {roomId : enteredRoomId})
     .then(function(res){
       const roomId = res.data.roomId
       socket.emit('join-room' , roomId)
