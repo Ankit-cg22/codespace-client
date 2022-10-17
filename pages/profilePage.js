@@ -95,7 +95,7 @@ export default function ProfilePage() {
                                             <div className='text-center w-[20%] '>{ss.lang}</div>
                                             <div></div>
                                         </div>
-                                        <div className='w-[15%] md:w-[10%] p-[10px] h-full px-[15px] bg-red-700' onClick={()=>handleDeleteSnippet(ss.snippet_id)}>
+                                        <div className='w-[15%] md:w-[10%] p-[10px] h-full px-[15px] bg-red-700 flex justify-center items-center' onClick={()=>handleDeleteSnippet(ss.snippet_id)}>
                                             <svg width="24" height="24" className='text-white' xmlns="http://www.w3.org/2000/svg"><path fill="white" fillRule="evenodd" clipRule="evenodd" d="M6 7a1 1 0 0 1 1 1v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8a1 1 0 1 1 2 0v11a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V8a1 1 0 0 1 1-1z" /><path fillRule="evenodd" clipRule="evenodd" d="M10 8a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1zM14 8a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1zM4 5a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1zM8 3a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1z" fill="white"/></svg>
                                         </div>
                                     </div>
