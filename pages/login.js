@@ -5,7 +5,7 @@ import axios from 'axios'
 import { BACKEND_URL } from '../utils/constants';
 import CircularLoader from '../components/CircularLoader';
 
-export default function Home() {
+export default function Login() {
   const router = useRouter();
   const API = axios.create( { baseURL : BACKEND_URL } )
   const [logging, setLogging] = useState(false)
@@ -21,13 +21,13 @@ export default function Home() {
     setAuthData({...authData , [e.target.name]: e.target.value})
   }
 
-  const handlLogInClick = (e) => {
-    if(signUp) handleSignUp(e);
-    else handleLogIn(e);
+  const handleLoginClick = () =>{
+    if(signUp) handleSignUp();
+    else handleLogIn();
   }
 
-  function handleSignUp(e){
-    e.preventDefault();
+  function handleSignUp(){
+    setLogging(true)
     console.log(authData)
     API.post('/auth/register' ,
     authData ,
@@ -45,15 +45,18 @@ export default function Home() {
         email : "" ,
         password : ""
         })
+        setLogging(false)
         router.push('/')
     })
     .catch(function(error){
-        console.log(error.response.data.message)
+        console.log(error.response)
+        setLogging(false)
         createErrorMessage(error.response.data.message)
     })
   }
-  function handleLogIn(e){
-    e.preventDefault();
+  function handleLogIn(){
+    setLogging(true)
+    
     console.log(authData)
     API.post('/auth/login' ,
     authData ,
@@ -72,9 +75,12 @@ export default function Home() {
             password : ""
         })
         router.push('/')
+        setLogging(false)
+
     })
     .catch(function(error){
-        console.log(error.response.data.message)
+        console.log(error.response)
+        setLogging(false)
         createErrorMessage(error.response.data.message)
     })
   }
@@ -125,13 +131,15 @@ export default function Home() {
                 }
                 <input placeholder='Email' type="email" name="email" className='max-w-[300px] w-[80%] md:w-[80%] mb-[20px] p-[10px] outline-none border-[2px] border-cyan-200 rounded-[5px]' onChange={(e)=>handleInputChange(e)} />
                 <input placeholder='Password' type="password" name="password" className='max-w-[300px] w-[80%] md:w-[80%] mb-[20px] p-[10px] outline-none border-[2px] border-cyan-200 rounded-[5px]' onChange={(e)=>   handleInputChange(e)} />
-                <button className='home-button' onClick={(e) => handlLogInClick(e)}>
-                {logging ? <CircularLoader/> 
-                :
-                    <>
-                    {signUp ? "Sign Up" : "Log In"}
-                    </>
-                }
+                <button className='home-button' 
+                  onClick={handleLoginClick}
+                >
+                  {logging ? <CircularLoader/> 
+                  :
+                      <>
+                      {signUp ? "Sign Up" : "Log In"}
+                      </>
+                  }
                 </button>
                 <div className='flex justify-between mt-[20px]  w-[60%] text-[0.8rem]'>
 
@@ -140,7 +148,7 @@ export default function Home() {
                         :
                         <div className='text-white font-bold w-[60%]  flex justify-center items-center'> Do not have account ?  </div>
                     }   
-                    <button className='login-button w-[40%]' onClick={()=>setSignUp(!signUp)}>
+                    <button className='login-button w-[40%]' onClick={()=> setSignUp(!signUp)} >
                         {signUp? "Log In" : "Sign Up"}
                     </button>
                 </div>
