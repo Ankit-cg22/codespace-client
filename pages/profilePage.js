@@ -79,7 +79,7 @@ export default function ProfilePage() {
   return (
     <div className='h-[100vh] w-[100vw]  bg-gray-900'>
         <Navbar/>
-        <div className='w-full h-[90%] p-[10px] '>
+        <div className='max-w-[1400px] m-auto w-full h-[90%] p-[10px] '>
             <div className='text-white w-full md:w-[50%] m-auto text-center'>
                 {userData ?
                     <>
