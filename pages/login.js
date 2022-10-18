@@ -115,7 +115,7 @@ export default function Login() {
   return (
     <div className='h-[100vh] w-[100vw]  bg-gray-900'>
         <Navbar/>
-        <div className='w-full h-[90%] flex justify-center items-center flex-col relative'>
+        <div className='w-full h-[90%] flex justify-center items-center flex-col  relative'>
             {errorMessage && 
                 <div className='w-[300px] p-[20px] bg-red-200 font-bold flex justify-center items-center rounded-[10px] absolute bottom-[5%] right-[1%] '>
                   {errorMessage} 
