@@ -35,8 +35,7 @@ export default function ProfilePage() {
         .then(function(response){
             setUserData(response.data.user)
             setSavedSnippets(response.data.savedSnippets)
-            console.log(response.data.user)
-            console.log(response.data.savedSnippets)
+            
         })
         .catch(function(error){
             console.log(error.message)
@@ -68,7 +67,7 @@ export default function ProfilePage() {
     setSavedSnippets(newSnippets)
     API.delete(`/profile-page/delete-snippet/${id}`)
     .then(function(response){
-        console.log(response)
+        
         createNotification('Snippet Deleted')
     })
     .catch(function(error){

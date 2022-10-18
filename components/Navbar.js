@@ -39,8 +39,7 @@ export default function Navbar({roomId , handlePauseClick ,setMutedIncoming , mu
       }
     }
     ).then(function(response){
-      console.log(response.data.isVerified)
-      console.log(response.data.user)
+      
       if(response.data.isVerified === false)return; 
       localStorage.setItem('user' , JSON.stringify(response.data.user))
       setLoggedIn(true)

@@ -72,8 +72,8 @@ export default function Home() {
 
   
   const handleCompileClick =()=>{
-    console.log(code)
-    console.log(input)
+    // console.log(code)
+    // console.log(input)
     setLoading(true)
     API.post('/userAction/compile' ,{
       code : code ,
@@ -81,8 +81,8 @@ export default function Home() {
       lang : language.value
     })
     .then(function(res){
-      console.log("ok")
-      console.log(res.data.data.output )
+      
+      // console.log(res.data.data.output )
       setOutput(res.data.data.output)
       socket.emit('output-value-emit' , res.data.data.output , roomId)
 
@@ -138,7 +138,7 @@ export default function Home() {
   })
 
   socket.on('user-connected' , userId => {
-    console.log(userId)
+    // console.log(userId)
   })
   
   useEffect(()=>{
@@ -156,7 +156,7 @@ export default function Home() {
       })
 
       socket.on('user-connected' , userId => {
-        console.log("oi")
+        
         connectToNewUser(userId , stream)
       })
 
@@ -177,7 +177,7 @@ export default function Home() {
   }
 
   socket.on('user-disconnected' , userId=>{
-    console.log(userId)
+    // console.log(userId)
     if(peers[userId]) peers[userId].close()
   } )
 

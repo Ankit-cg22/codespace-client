@@ -28,7 +28,6 @@ export default function Login() {
 
   function handleSignUp(){
     setLogging(true)
-    console.log(authData)
     API.post('/auth/register' ,
     authData ,
     {
@@ -37,7 +36,6 @@ export default function Login() {
         } 
     })
     .then(function(res){
-        console.log(res.data)
         localStorage.setItem('token' , res.data.token)
         localStorage.setItem('user' , JSON.stringify(res.data.user))
         setAuthData({
@@ -57,7 +55,6 @@ export default function Login() {
   function handleLogIn(){
     setLogging(true)
     
-    console.log(authData)
     API.post('/auth/login' ,
     authData ,
     {
@@ -66,7 +63,7 @@ export default function Login() {
         } 
     })
     .then(function(res){
-        console.log(res.data)
+        
         localStorage.setItem('token' , res.data.token)
         localStorage.setItem('user' , JSON.stringify(res.data.user))
         setAuthData({
@@ -98,8 +95,7 @@ export default function Login() {
     ).then(function(response){
       if(response.data.isVerified === false)return; 
       router.push('/');
-      console.log(response.data.isVerified)
-      console.log(response.data.user)
+      
       localStorage.setItem('user' , JSON.stringify(response.data.user))
     })
     .catch(function(error){
@@ -141,12 +137,12 @@ export default function Login() {
                       </>
                   }
                 </button>
-                <div className='flex justify-between mt-[20px]  w-[60%] text-[0.8rem]'>
+                <div className='flex justify-between mt-[20px] w-[90%]   md:w-[60%] text-[0.8rem]'>
 
                     {signUp ?
-                        <div className='text-white font-bold w-[60%]  flex justify-center items-center'> Already have account ?  </div>
+                        <div className='text-white font-bold w-[75%] mr-[5px] flex justify-center items-center'> Already have account ?  </div>
                         :
-                        <div className='text-white font-bold w-[60%]  flex justify-center items-center'> Do not have account ?  </div>
+                        <div className='text-white font-bold w-[75%] mr-[5px] flex justify-center items-center'> Do not have account ?  </div>
                     }   
                     <button className='login-button w-[40%]' onClick={()=> setSignUp(!signUp)} >
                         {signUp? "Log In" : "Sign Up"}

@@ -9,9 +9,15 @@ export default function SaveSnippetModal({open ,setOpen, code , language , creat
     const handleSaveSnippentClick =() =>{
         const user = JSON.parse(localStorage.getItem('user'))
         const snippetData = { user_id : user.user_id , code : code ,lang:language , title:title}
-        console.log(snippetData)
-        setOpen(false)
+        if(!title)
+        {
+            createNotification("Please enter a title")
+            return;
+        }
 
+        // console.log(snippetData)
+        setOpen(false)
+        
         // API call 
         API.post(
             '/profile-page/save-snippet' ,
