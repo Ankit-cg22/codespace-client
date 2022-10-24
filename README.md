@@ -1,5 +1,5 @@
 <h1> Codespace : Collaborative coding platform </h1>
-<h3> Platform that faciliates collaborative coding with realtime code editor ,code compilation support ,  collaborative drawing board and realtime voice chat . </h3>
+<h3> Platform that facilitates collaborative coding with realtime code editor ,code compilation support ,  collaborative drawing board and realtime voice chat . </h3>
 
 <h3> Server code : https://github.com/Ankit-cg22/codespace-server  </h3> 
 
@@ -9,7 +9,7 @@
 - Real time code editor
 - Collaborative real time drawing board 
 - Code compilation support for c , c++ , java and python 
-- User authentication and authorization using jwt tokens
+- User authentication and authorization using jwt 
 - Feature to save code snippets . During meetings if one wants to save a code snippets he/she can do it with one click 
 - Edit and delete saved snippets . One can edit the saved snippets eg to add some notes to them 
 - Simple toast notification system , implemented without using any external library 
